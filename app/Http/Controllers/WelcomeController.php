@@ -13,8 +13,6 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        # Inicializamos variable tipo array para almacenar la informacion
-        # unificada de dos apis random user y newsapi
         $data = $this->getNotice();
         $articles = new Paginator($data, 10);
         return view('blog', compact('articles'));
