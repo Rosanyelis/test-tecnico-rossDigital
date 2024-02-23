@@ -13,9 +13,19 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        $data = $this->getNotice();
-        $articles = new Paginator($data, 10);
-        return view('blog', compact('articles'));
+        $data = collect($this->getNotice());
+        $currentPage = request()->get('page', 1);
+        $perPage = 10;
+        $totalPages = ceil($data->count() / $perPage);
+        $offset = ($currentPage - 1) * $perPage;
+
+        $currentPageData = $data->slice($offset, $perPage);
+
+        return view('blog', [
+            'articles' => $currentPageData,
+            'pages' => range(1, $totalPages),
+            'currentPage' => $currentPage,
+        ]);
     }
 
     public function getName()
@@ -32,6 +42,7 @@ class WelcomeController extends Controller
     public function getNotice()
     {
         $data = [];
+        $autor = $this->getName();
         # consultados las noticias
         $responseNews = Http::get("https://newsapi.org/v2/everything?q=international&apiKey=874c023bb23041499997ae83931a8410");
         $result = $responseNews->json();
@@ -43,7 +54,7 @@ class WelcomeController extends Controller
                 'title'         => $item['title'],
                 'description'   => $item['description'],
                 'image'         => $item['urlToImage'],
-                'autor'         => $this->getName(),
+                'autor'         => $autor,
             ];
 
             array_push($data, $article);

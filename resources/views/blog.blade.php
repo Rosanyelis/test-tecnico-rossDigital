@@ -137,7 +137,14 @@
             @endforeach
 
             <div class="col-md-12 mt-4 mb-4 text-center">
-                {{ $articles->links() }}
+            @foreach ($pages as $page)
+                @if ($page == $currentPage)
+                <a class="btn btn-secondary" href="#" disabled>{{ $page }}</a>
+                @else
+                <a class="btn btn-primary" href="\?page={{ $page }}">{{ $page }}</a>
+                @endif
+
+            @endforeach
             </div>
         </div>
 
