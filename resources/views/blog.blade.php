@@ -2,29 +2,17 @@
 <html lang="en" data-bs-theme="auto">
 
 <head>
-    <script src="/docs/5.3/assets/js/color-modes.js"></script>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.118.2">
-    <title>Blog Template · Bootstrap v5.3</title>
-
+    <title>Test Tecnico Rosanyelis Mendoza</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/blog/">
-
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
         crossorigin="anonymous">
-
-    <meta name="theme-color" content="#712cf9">
-
-
     <style>
         .bd-placeholder-img {
             font-size: 1.125rem;
@@ -104,8 +92,6 @@
         }
 
     </style>
-
-
     <!-- Custom styles for this template -->
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
     <!-- Custom styles for this template -->
@@ -113,8 +99,6 @@
 </head>
 
 <body>
-
-
     <main class="container">
         <div class="p-4 p-md-5 mb-4 rounded text-body-emphasis bg-body-secondary">
             <div class="col-lg-12 px-0 text-center">
@@ -122,33 +106,76 @@
             </div>
         </div>
 
-        <div class="row mb-2 gy-4">
-            @foreach ($articles as $item)
-            <div class="col-md-3">
-                <div class="card" >
-                    <img src="{{ $item['image'] }}" class="card-img-top img-fluid" alt="{{ $item['title'] }}">
-                    <div class="card-body">
-                        <h4>{{ $item['title'] }}</h4>
-                        <div class="mb-1 text-body-secondary"><strong>Autor:</strong> {{ $item['autor'] }}</div>
-                        <p class="card-text text-truncate">{{ $item['description'] }}</p>
+        <div class="row">
+            <div class="col-3">
+                <h4>Categorías</h4>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <a href="\?categoria=bitcoin">Bitcoin</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="\?categoria=apple">Apple</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="\?categoria=google">Google</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="\?categoria=economy">Economía</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="\?categoria=policy">Política</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-9">
+                <form class="row " action="" method="GET">
+                        @csrf
+                    <input type="hidden" name="categoria" value="@if ($categoria){{ $categoria }}@endif">
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="fechaInicio" class="form-label">Fecha de Inicio</label>
+                            <input type="date" name="dateInit" class="form-control" id="fechaInicio"
+                            value="{{ request()->dateInit }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="mb-3">
+                            <label for="fechaFin" class="form-label">Fecha Fin</label>
+                            <input type="date" name="dateFin" class="form-control" id="fechaFin"
+                            value="{{ request()->dateFin }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-primary mt-4" type="submit">Filtrar</button>
+                    </div>
+                </form>
+                <div class="row gy-3">
+                    @foreach ($articles as $item)
+                    <div class="col-md-6">
+                        <div class="card" >
+                            <img src="{{ $item['image'] }}" class="card-img-top img-fluid" alt="{{ $item['title'] }}">
+                            <div class="card-body">
+                                <h4>{{ $item['title'] }}</h4>
+                                <div class="mb-1 text-body-secondary"><strong>Autor:</strong> {{ $item['autor'] }}</div>
+                                <div class="mb-1 text-body-secondary"><strong>Fecha de Publicación:</strong> {{ $item['date_published'] }}</div>
+                                <p class="card-text text-truncate">{{ $item['description'] }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+
+                    <div class="col-md-12 mt-4 mb-4 text-center">
+                    @foreach ($pages as $page)
+                        @if ($page == $currentPage)
+                        <a class="btn btn-secondary" href="#" disabled>{{ $page }}</a>
+                        @else
+                        <a class="btn btn-primary" href="@if ($categoria) /?categoria={{ $categoria }}@endif&@if (request()->dateInit)dateInit={{ request()->dateInit }}@endif&@if (request()->dateFin)dateFin={{ request()->dateFin }}@endif&page={{ $page }}">{{ $page }}</a>
+                        @endif
+                    @endforeach
                     </div>
                 </div>
             </div>
-            @endforeach
-
-            <div class="col-md-12 mt-4 mb-4 text-center">
-            @foreach ($pages as $page)
-                @if ($page == $currentPage)
-                <a class="btn btn-secondary" href="#" disabled>{{ $page }}</a>
-                @else
-                <a class="btn btn-primary" href="\?page={{ $page }}">{{ $page }}</a>
-                @endif
-
-            @endforeach
-            </div>
         </div>
-
-
     </main>
 
 
